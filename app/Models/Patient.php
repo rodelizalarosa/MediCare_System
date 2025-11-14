@@ -27,6 +27,10 @@ class Patient extends Model
         'record_status'
     ];
 
+    protected $dates = [
+        'birth_date',
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
@@ -35,5 +39,10 @@ class Patient extends Model
     public function medicalHistory()
     {
         return $this->hasOne(MedicalHistory::class, 'patient_id');
+    }
+
+    public function appointments()
+    {
+        return $this->hasMany(Appointment::class, 'patient_id', 'id');
     }
 }

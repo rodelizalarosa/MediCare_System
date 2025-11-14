@@ -1,0 +1,241 @@
+/* ------------------------------------------------------ */
+/* HEADER                                                  */
+/* ------------------------------------------------------ */
+
+.header {
+    position: fixed;
+    top: 0;
+    left: 280px; /* Align beside sidebar */
+    width: calc(100% - 330px); /* Responsive width */
+    height: 75px;
+
+    background: #ffffff;
+    padding: 0 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+
+    border-bottom: 1px solid #e0e0e0;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+
+    z-index: 9999;
+}
+
+.header-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.header-center {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* Left side: Page title + date */
+.header-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.header-left h1 {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 700;
+    color: #1B4D89;
+}
+
+.header-left .date {
+    margin-top: 3px;
+    font-size: 13px;
+    color: #64748b;
+}
+
+/* ------------------------------------------------------ */
+/* SEARCH BAR                                              */
+/* ------------------------------------------------------ */
+
+.search-bar {
+    position: relative;
+    margin-right: 22px;
+}
+
+.search-bar input {
+    padding: 8px 38px 8px 12px;
+    border: 1px solid #dcdcdc;
+    border-radius: 10px;
+    font-size: 14px;
+    width: 300px;
+    transition: 0.25s ease;
+}
+
+.search-bar input:focus {
+    border-color: #1B4D89;
+    outline: none;
+}
+
+.search-icon {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+    color: #475569;
+}
+
+/* ------------------------------------------------------ */
+/* NOTIFICATION ICON                                       */
+/* ------------------------------------------------------ */
+
+.icon {
+    font-size: 23px;
+    color: #1B4D89;
+    cursor: pointer;
+    margin-right: 15px;
+    transition: 0.2s ease;
+}
+
+.icon:hover {
+    color: #F4A700;
+}
+
+/* ------------------------------------------------------ */
+/* USER DROPDOWN                                           */
+/* ------------------------------------------------------ */
+
+.user-menu {
+    position: relative;
+}
+
+.user-name {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    font-size: 15px;
+    font-weight: 600;
+    color: #1B4D89;
+
+    cursor: pointer;
+    padding: 8px 12px;
+    border-radius: 8px;
+    transition: 0.25s ease;
+}
+
+.user-name:hover {
+    background: rgba(27, 77, 137, 0.08);
+}
+
+.user-icon {
+    font-size: 28px;
+}
+
+.dropdown {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 48px;
+
+    background: #ffffff;
+    width: 170px;
+    border-radius: 10px;
+
+    box-shadow: 0 4px 14px rgba(0,0,0,0.12);
+    overflow: hidden;
+    z-index: 10000;
+}
+
+.dropdown li {
+    padding: 12px 16px;
+    font-size: 14px;
+    color: #1B4D89;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: 0.25s ease;
+}
+
+.dropdown li:hover {
+    background: rgba(27, 77, 137, 0.10);
+}
+
+/* ------------------------------------------------------ */
+/* LOGOUT MODAL                                            */
+/* ------------------------------------------------------ */
+
+#logout-modal {
+    display: none;
+    position: fixed;
+    z-index: 100000;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.55);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#logout-modal .modal-content {
+    background: #ffffff;
+    padding: 25px;
+    width: 360px;
+
+    border-radius: 14px;
+    text-align: center;
+
+    box-shadow: 0px 4px 16px rgba(0,0,0,0.20);
+    animation: modalPop 0.25s ease;
+}
+
+@keyframes modalPop {
+    0% { transform: scale(0.9); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.modal-actions {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.cancel {
+    background: #cbd5e1;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.logout {
+    background: #e63946;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+/* ------------------------------------------------------ */
+/* PAGE CONTENT SPACING                                    */
+/* ------------------------------------------------------ */
+
+.main-content {
+    margin-left: 250px;     /* Make room for sidebar */
+    margin-top: 95px;       /* Make room for fixed header */
+    padding: 25px;
+}

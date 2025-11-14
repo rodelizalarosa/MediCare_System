@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class EnsurePatientProfileIsComplete
+class EnsurePatientProfileComplete
 {
     public function handle(Request $request, Closure $next)
     {
@@ -17,9 +17,9 @@ class EnsurePatientProfileIsComplete
             return redirect()->route('login');
         }
 
-        // If email not verified, block access
+        // If email not verified, redirect to verification page
         if ($user->email_verified == 0) {
-            return redirect()->route('login')
+            return redirect()->route('verify.pin.form')
                 ->with('error', 'Please verify your email first.');
         }
 

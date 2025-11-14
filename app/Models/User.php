@@ -18,7 +18,9 @@ class User extends Authenticatable
         'role',
         'email_verified',
         'status',
-        'verify_token'
+        'verify_token',
+        'verification_pin',
+        'pin_created_at'
     ];
 
     protected $hidden = [
@@ -26,11 +28,23 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    protected function password(): Attribute
+    /**
+     * Ensure we only hash plain passwords (avoid double-hashing).
+     */
+    public function setPasswordAttribute($value)
     {
-        return Attribute::make(
-            set: fn($value) => bcrypt($value)
-        );
+        if (empty($value)) {
+            return;
+        }
+
+        // If value already looks like a password hash, store it as-is.
+        // password_get_info(...) returns ['algo' => 0] for plain text.
+        if (is_string($value) && password_get_info($value)['algo'] !== 0) {
+            $this->attributes['password'] = $value;
+            return;
+        }
+
+        $this->attributes['password'] = \Illuminate\Support\Facades\Hash::make($value);
     }
 
     public function patient()

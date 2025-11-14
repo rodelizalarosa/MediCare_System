@@ -6,6 +6,9 @@
     <title>Register | MediCare</title>
 
     <link rel="icon" type="image/x-icon" href="{{ asset('images/favicon.ico') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Serif:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/home.css') }}?v={{ time() }}">
     <link rel="stylesheet" href="{{ asset('css/auth.css') }}?v={{ time() }}">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>

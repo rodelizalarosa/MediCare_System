@@ -11,14 +11,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('email')->unique();
             $table->string('password');
-            $table->enum('role', ['patient','staff','doctor','midwife'])->default('patient');
-            $table->string('verification_pin', 6)->nullable()->after('verify_token');
+            $table->enum('role', ['patient', 'staff', 'doctor', 'midwife'])->default('patient');
+
+            // Email verification
             $table->tinyInteger('email_verified')->default(0);
-            $table->enum('status', ['Active','Pending','Disabled'])->default('Active');
+            $table->string('verify_token', 255)->nullable();
+            $table->string('verification_pin', 6)->nullable();
+            $table->timestamp('pin_created_at')->nullable();
+
+            $table->enum('status', ['Active', 'Pending', 'Disabled'])->default('Active');
+
             $table->rememberToken();
             $table->softDeletes();
             $table->timestamps();

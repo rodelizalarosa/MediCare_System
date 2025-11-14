@@ -46,7 +46,53 @@ document.addEventListener('DOMContentLoaded', function() {
                 targetSection.scrollIntoView({
                     behavior: 'smooth'
                 });
+                // Close mobile menu after clicking
+                const navMenu = document.getElementById('navMenu');
+                const mobileToggle = document.getElementById('mobileMenuToggle');
+                if (navMenu && mobileToggle) {
+                    navMenu.classList.remove('active');
+                    mobileToggle.classList.remove('active');
+                    const icon = mobileToggle.querySelector('i');
+                    if (icon) {
+                        icon.classList.remove('bx-x');
+                        icon.classList.add('bx-menu');
+                    }
+                }
             }
         });
     });
+
+    // Mobile menu toggle
+    const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+    const navMenu = document.getElementById('navMenu');
+    
+    if (mobileMenuToggle && navMenu) {
+        const icon = mobileMenuToggle.querySelector('i');
+        
+        mobileMenuToggle.addEventListener('click', function() {
+            navMenu.classList.toggle('active');
+            mobileMenuToggle.classList.toggle('active');
+            
+            // Toggle icon between menu and close
+            if (navMenu.classList.contains('active')) {
+                icon.classList.remove('bx-menu');
+                icon.classList.add('bx-x');
+            } else {
+                icon.classList.remove('bx-x');
+                icon.classList.add('bx-menu');
+            }
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!navMenu.contains(e.target) && !mobileMenuToggle.contains(e.target)) {
+                navMenu.classList.remove('active');
+                mobileMenuToggle.classList.remove('active');
+                if (icon) {
+                    icon.classList.remove('bx-x');
+                    icon.classList.add('bx-menu');
+                }
+            }
+        });
+    }
 });
