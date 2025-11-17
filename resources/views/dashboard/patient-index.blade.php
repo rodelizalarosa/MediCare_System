@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
 <style>
     .dashboard-container {
-        padding: 20px 20px 20px 40px; /* push content slightly to the right */
+        padding: 0px 20px 20px 40px; /* push content slightly to the right */
     }
 
     .dashboard-grid {
@@ -215,7 +215,8 @@
     padding: 40px 20px;
     background: linear-gradient(135deg, #1B4D89 0%, #163B6C 100%);
     border-radius: 12px;
-    margin-top: 30px;
+    margin-top: 15px;
+    margin-bottom: 15px;
 }
 
 .btn-book-appointment {
@@ -428,6 +429,10 @@
     background: white; /* Ensure solid background */
 }
 
+.center-footer {
+    justify-content: center;
+}
+
 .btn-cancel {
     background: #e0e0e0;
     color: #333;
@@ -531,6 +536,14 @@
         </div>
     @endif
 
+    <!-- Book Appointment Section -->
+    <div class="book-appointment-section">
+        <a href="#" class="btn-book-appointment" onclick="bookAppointment()">
+            <i class='bx bx-calendar-plus'></i>
+            Book an Appointment Now
+        </a>
+    </div>
+
     <div class="dashboard-grid">
         <!-- Upcoming Appointments Card -->
         <div class="dashboard-card">
@@ -540,17 +553,17 @@
             <div class="card-body">
                 @if(count($upcomingAppointments) > 0)
                     @foreach($upcomingAppointments as $appointment)
-                        <div class="appointment-item" onclick="viewAppointmentDetails({{ $appointment['id'] ?? 0 }})">
+                        <div class="appointment-item" onclick="viewAppointmentDetails({{ $appointment['id'] }})">
                             <div class="appointment-header">
                                 <div class="appointment-date">
-                                    <i class='bx bx-calendar'></i> {{ $appointment['date'] ?? 'N/A' }}
+                                    <i class='bx bx-calendar'></i> {{ $appointment['date'] }}
                                 </div>
-                                <span class="status-badge status-{{ strtolower($appointment['status'] ?? 'pending') }}">
-                                    {{ $appointment['status'] ?? 'Pending' }}
+                                <span class="status-badge status-{{ strtolower($appointment['status']) }}">
+                                    {{ $appointment['status'] }}
                                 </span>
                             </div>
                             <div class="appointment-type">
-                                <i class='bx bx-time'></i> {{ $appointment['time'] ?? 'N/A' }} - {{ $appointment['type'] ?? 'N/A' }}
+                                <i class='bx bx-time'></i> {{ $appointment['time'] }} - {{ $appointment['type'] }}
                             </div>
                         </div>
                     @endforeach
@@ -640,14 +653,6 @@
             </div>
         </div>
     </div>
-
-    <!-- Book Appointment Section -->
-    <div class="book-appointment-section">
-        <a href="#" class="btn-book-appointment" onclick="bookAppointment()">
-            <i class='bx bx-calendar-plus'></i>
-            Book an Appointment Now
-        </a>
-    </div>
 </div>
 
 <!-- Floating Medical History Form Modal -->
@@ -705,6 +710,37 @@
         </form>
     </div>
 </div>
+
+<!-- Floating Appointment Details Modal -->
+<div id="appointmentDetailsModal" class="floating-modal">
+    <div class="floating-modal-content">
+        <div class="floating-modal-header">
+            <h3>Appointment Details</h3>
+            <button class="floating-modal-close" onclick="closeAppointmentDetailsModal()">&times;</button>
+        </div>
+        <div class="floating-modal-body">
+            <div class="form-group">
+                <label>Date:</label>
+                <input type="text" id="appointment-date" readonly>
+            </div>
+            <div class="form-group">
+                <label>Time:</label>
+                <input type="text" id="appointment-time" readonly>
+            </div>
+            <div class="form-group">
+                <label>Type:</label>
+                <input type="text" id="appointment-type" readonly>
+            </div>
+            <div class="form-group">
+                <label>Status:</label>
+                <input type="text" id="appointment-status" readonly>
+            </div>
+        </div>
+        <div class="floating-modal-footer center-footer">
+            <button type="button" class="btn-save" onclick="closeAppointmentDetailsModal()">OK</button>
+        </div>
+    </div>
+</div>
 @endsection
 
 @push('scripts')
@@ -722,15 +758,39 @@ function bookAppointment() {
 }
 
 function viewAppointmentDetails(appointmentId) {
-    // For now, redirect to appointments page. Later this can be enhanced to show a modal with details
-    window.location.href = "{{ route('patient.appointments') }}";
+    // Fetch appointment details via AJAX
+    fetch(`/patient/appointments/${appointmentId}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                document.getElementById('appointment-date').value = data.appointment.date;
+                document.getElementById('appointment-time').value = data.appointment.time;
+                document.getElementById('appointment-type').value = data.appointment.type;
+                document.getElementById('appointment-status').value = data.appointment.status;
+                document.getElementById('appointmentDetailsModal').classList.add('active');
+            } else {
+                alert('Failed to load appointment details.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while loading appointment details.');
+        });
+}
+
+function closeAppointmentDetailsModal() {
+    document.getElementById('appointmentDetailsModal').classList.remove('active');
 }
 
 // Close modal when clicking outside
 window.onclick = function(event) {
-    const modal = document.getElementById('medicalHistoryModal');
-    if (event.target === modal) {
+    const medicalModal = document.getElementById('medicalHistoryModal');
+    const appointmentModal = document.getElementById('appointmentDetailsModal');
+    if (event.target === medicalModal) {
         closeMedicalHistoryModal();
+    }
+    if (event.target === appointmentModal) {
+        closeAppointmentDetailsModal();
     }
 }
 
@@ -738,6 +798,7 @@ window.onclick = function(event) {
 document.addEventListener('keydown', function(event) {
     if (event.key === 'Escape') {
         closeMedicalHistoryModal();
+        closeAppointmentDetailsModal();
     }
 });
 </script>

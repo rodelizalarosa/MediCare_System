@@ -3,7 +3,7 @@
 @section('title', 'Patient Profile')
 
 @php
-    $pageTitle = 'Patient Profile';
+    $pageTitle = 'My Profile';
 @endphp
 
 @push('styles')

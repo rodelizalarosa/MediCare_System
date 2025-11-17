@@ -1,15 +1,16 @@
-# Patient Records and Profile UI Implementation
+# TODO: Fix Header Page Title Issue and Add Scrollable Forms
 
-## Tasks
-- [x] Create resources/views/patient/records.blade.php - Display medical history and appointment history
-- [x] Create resources/views/patient/profile.blade.php - Editable form with personal info and emergency contacts
-- [x] Update public/css/patient.css - Add styles for records and profile views
-- [x] Update PatientProfileController with showProfile and updateProfile methods
-- [x] Add routes for patient profile and records
-- [x] Update sidebar navigation with new links
+## Completed Tasks
+- [x] Added $pageTitle to add-staff.blade.php
+- [x] Added $pageTitle to add-doctor.blade.php
+- [x] Added $pageTitle to add-midwife.blade.php
+- [x] Changed $pageTitle in patient/profile.blade.php from 'Patient Profile' to 'My Profile'
 
-## Details
-- Records view: Show detailed medical records (conditions, allergies, medications, etc.) and appointment history (past and upcoming appointments)
-- Profile view: Editable form with personal information (name, birth date, address, etc.) and emergency contacts, with update/save button
-- Follow existing design patterns from appointments.blade.php
-- Use consistent styling with the rest of the application
+## Remaining Tasks
+- [x] Convert add-staff.blade.php to use floating modal structure (like medical history modal)
+- [x] Convert add-doctor.blade.php to use floating modal structure (like medical history modal)
+- [x] Convert add-midwife.blade.php to use floating modal structure (like medical history modal)
+- [ ] Update header.blade.php to remove JS title logic (if any)
+- [ ] Update sidebar/admin.blade.php for active classes
+- [ ] Update sidebar/patient.blade.php for active classes
+- [ ] Test navigation to ensure titles update correctly

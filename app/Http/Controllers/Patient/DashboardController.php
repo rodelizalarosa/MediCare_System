@@ -40,6 +40,7 @@ class DashboardController extends Controller
             ->get()
             ->map(function ($appointment) {
                 return [
+                    'id' => $appointment->appointment_id,
                     'date' => $appointment->appointment_date,
                     'time' => $appointment->appointment_time,
                     'type' => ucfirst($appointment->appointment_type),
@@ -105,7 +106,7 @@ class DashboardController extends Controller
         $request->validate([
             'appointment_type' => 'required|in:General Check-up,Maternal Check-up,Vaccination,Doctor Consultation,Midwife Consultation',
             'preferred_date' => 'required|date|after_or_equal:today',
-            'preferred_time' => 'required|date_format:H:i',
+            'preferred_time' => 'required|date_format:H:i|after_or_equal:08:00|before_or_equal:17:00',
             'reason' => 'required|string|max:500',
         ]);
 
@@ -116,6 +117,16 @@ class DashboardController extends Controller
         if (!$patient) {
             return redirect()->route('profile.complete')
                 ->with('error', 'Patient record not found. Please complete your profile.');
+        }
+
+        // Check if patient has any pending or approved appointments that are not completed, cancelled, or rescheduled
+        $existingAppointment = Appointment::where('patient_id', $patient->id)
+            ->whereIn('appointment_status', ['pending', 'approved'])
+            ->where('appointment_date', '>=', now()->toDateString())
+            ->first();
+
+        if ($existingAppointment) {
+            return redirect()->back()->with('error', 'You already have a pending or approved appointment. You can only book a new appointment if your current one is completed, cancelled, or rescheduled.');
         }
 
         // Create the appointment
@@ -129,5 +140,26 @@ class DashboardController extends Controller
         ]);
 
         return redirect()->route('dashboard.patient')->with('success', 'Appointment booked successfully! We will confirm your appointment soon.');
+    }
+
+    public function showAppointment(Appointment $appointment)
+    {
+        $user = Auth::user();
+        $patient = $user->patient;
+
+        // Ensure the appointment belongs to the authenticated patient
+        if ($appointment->patient_id !== $patient->id) {
+            return response()->json(['success' => false, 'message' => 'Unauthorized'], 403);
+        }
+
+        return response()->json([
+            'success' => true,
+            'appointment' => [
+                'date' => $appointment->appointment_date,
+                'time' => $appointment->appointment_time,
+                'type' => ucfirst($appointment->appointment_type),
+                'status' => ucfirst($appointment->appointment_status),
+            ]
+        ]);
     }
 }

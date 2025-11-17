@@ -7,6 +7,7 @@
 @endphp
 
 @push('styles')
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <style>
     .appointments-container {
         padding: 20px;
@@ -275,6 +276,7 @@
 @endpush
 
 @push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const appointmentTypeSelect = document.getElementById('appointment_type');
@@ -294,40 +296,51 @@ document.addEventListener('DOMContentLoaded', function() {
     const appointmentTypeWrapper = appointmentTypeSelect.closest('.form-group').querySelector('.input-wrapper');
     appointmentTypeWrapper.insertAdjacentElement('afterend', scheduleInfo);
 
+    // Initialize Flatpickr
+    let fp = flatpickr(dateInput, {
+        dateFormat: "Y-m-d",
+        minDate: "today",
+        disable: [],
+        onChange: function(selectedDates, dateStr, instance) {
+            // Optional: handle date selection
+        }
+    });
+
     function updateAvailableDates() {
         const selectedType = appointmentTypeSelect.value;
         const today = new Date();
-        const currentDate = new Date(today);
+        const disabledDates = [];
 
-        // Clear existing restrictions
-        dateInput.setAttribute('min', today.toISOString().split('T')[0]);
+        // Define available days based on appointment type
+        let availableDays = [];
 
-        if (selectedType === 'Doctor Consultation') {
+        if (selectedType === 'Doctor Consultation' || selectedType === 'General Check-up') {
             // Doctors: Tuesday (2), Thursday (4)
-            const availableDates = [];
-            for (let i = 0; i < 30; i++) {
-                const date = new Date(currentDate);
-                date.setDate(currentDate.getDate() + i);
-                const dayOfWeek = date.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
-                if (dayOfWeek === 2 || dayOfWeek === 4) { // Tuesday or Thursday
-                    availableDates.push(date.toISOString().split('T')[0]);
-                }
-            }
-            console.log('Available dates for doctors:', availableDates);
-        } else if (selectedType === 'Midwife Consultation') {
+            availableDays = [2, 4]; // Tuesday, Thursday
+        } else if (selectedType === 'Midwife Consultation' || selectedType === 'Maternal Check-up') {
             // Midwives: Monday (1), Wednesday (3), Friday (5)
-            const availableDates = [];
-            for (let i = 0; i < 30; i++) {
-                const date = new Date(currentDate);
-                date.setDate(currentDate.getDate() + i);
-                const dayOfWeek = date.getDay();
-                if (dayOfWeek === 1 || dayOfWeek === 3 || dayOfWeek === 5) { // Monday, Wednesday, Friday
-                    availableDates.push(date.toISOString().split('T')[0]);
-                }
-            }
-            console.log('Available dates for midwives:', availableDates);
+            availableDays = [1, 3, 5]; // Monday, Wednesday, Friday
+        } else if (selectedType === 'Vaccination') {
+            // Vaccinations: Monday to Friday (both doctors and midwives can do it)
+            availableDays = [1, 2, 3, 4, 5]; // Monday to Friday
+        } else {
+            // For other types or no selection, all days available
+            availableDays = [0, 1, 2, 3, 4, 5, 6]; // All days
         }
-        // For other types (General Check-up, Maternal Check-up, Vaccination), all days are available
+
+        // Generate disabled dates for the next 90 days
+        for (let i = 0; i < 90; i++) {
+            const date = new Date(today);
+            date.setDate(today.getDate() + i);
+            const dayOfWeek = date.getDay();
+
+            if (!availableDays.includes(dayOfWeek)) {
+                disabledDates.push(new Date(date));
+            }
+        }
+
+        // Update Flatpickr with new disabled dates
+        fp.set('disable', disabledDates);
     }
 
     appointmentTypeSelect.addEventListener('change', updateAvailableDates);
@@ -375,7 +388,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <label for="preferred_time">
                     <i class='bx bx-time'></i> Preferred Time
                 </label>
-                <input type="time" id="preferred_time" name="preferred_time" required>
+                <input type="time" id="preferred_time" name="preferred_time" required min="08:00" max="17:00">
             </div>
 
             <div class="form-group">

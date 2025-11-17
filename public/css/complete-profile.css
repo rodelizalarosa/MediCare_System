@@ -20,9 +20,11 @@ h1, h2, h3, h4, h5, h6 {
     font-size: 1.5em;
     color: #333;
     margin-bottom: 10px;
+    text-align: center;
 }
 
 .subtitle {
+    text-align: center;
     color: #777;
     margin-bottom: 25px;
 }
@@ -52,6 +54,16 @@ label {
 
 input[type="text"],
 textarea {
+    width: 98%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    outline: none;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.input-wrapper select {
     width: 100%;
     padding: 10px;
     border: 1px solid #ccc;
@@ -62,7 +74,8 @@ textarea {
 }
 
 input[type="text"]:focus,
-textarea:focus {
+textarea:focus,
+select:focus {
     border-color: #007bff;
 }
 
@@ -73,6 +86,8 @@ textarea:focus {
     padding: 10px 20px;
     border: none;
     border-radius: 6px;
+    justify-content: center;
+    align-items: center;
     cursor: pointer;
     transition: 0.3s;
 }
@@ -97,4 +112,29 @@ textarea:focus {
 .alert.error {
     background: #f8d7da;
     color: #721c24;
+}
+
+/* Select dropdown wrapper for icon */
+.input-wrapper {
+    position: relative;
+}
+
+.input-wrapper select {
+    width: 100%;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    padding-right: 40px;
+    cursor: pointer;
+    background-color: white;
+}
+
+.select-icon {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+    color: #007bff;
+    pointer-events: none;
 }

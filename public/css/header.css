@@ -5,8 +5,8 @@
 .header {
     position: fixed;
     top: 0;
-    left: 280px; /* Align beside sidebar */
-    width: calc(100% - 330px); /* Responsive width */
+    left: 250px; /* Align beside sidebar */
+    width: calc(100% - 250px); /* Responsive width */
     height: 75px;
 
     background: #ffffff;
@@ -143,7 +143,7 @@
     display: none;
     position: absolute;
     right: 0;
-    top: 48px;
+    top: 30px;
 
     background: #ffffff;
     width: 170px;
@@ -152,6 +152,7 @@
     box-shadow: 0 4px 14px rgba(0,0,0,0.12);
     overflow: hidden;
     z-index: 10000;
+    margin-bottom: 0;
 }
 
 .dropdown li {
@@ -208,7 +209,8 @@
 .modal-actions {
     margin-top: 20px;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
+    gap: 10px;
 }
 
 .cancel {
@@ -236,6 +238,6 @@
 
 .main-content {
     margin-left: 250px;     /* Make room for sidebar */
-    margin-top: 95px;       /* Make room for fixed header */
+    margin-top: 80px;       /* Make room for fixed header */
     padding: 25px;
 }

@@ -26,7 +26,7 @@
                 <h3>Personal Information</h3>
                 <div class="form-group">
                     <label for="address">Complete Address</label>
-                    <textarea name="address" id="address" rows="2" required>{{ old('address') }}</textarea>
+                    <input type="text" name="address" id="address" value="{{ old('address') }}" required>
                 </div>
 
                 <div class="form-group">
@@ -49,7 +49,19 @@
 
                 <div class="form-group">
                     <label for="relationship_to_patient">Relationship to Patient</label>
-                    <input type="text" name="relationship_to_patient" id="relationship_to_patient" value="{{ old('relationship_to_patient') }}" required>
+                    <div class="input-wrapper">
+                        <select name="relationship_to_patient" id="relationship_to_patient" required>
+                            <option value="">Select relationship</option>
+                            <option value="Spouse" {{ old('relationship_to_patient') == 'Spouse' ? 'selected' : '' }}>Spouse</option>
+                            <option value="Parent" {{ old('relationship_to_patient') == 'Parent' ? 'selected' : '' }}>Parent</option>
+                            <option value="Child" {{ old('relationship_to_patient') == 'Child' ? 'selected' : '' }}>Child</option>
+                            <option value="Sibling" {{ old('relationship_to_patient') == 'Sibling' ? 'selected' : '' }}>Sibling</option>
+                            <option value="Relative" {{ old('relationship_to_patient') == 'Relative' ? 'selected' : '' }}>Relative</option>
+                            <option value="Friend" {{ old('relationship_to_patient') == 'Friend' ? 'selected' : '' }}>Friend</option>
+                            <option value="Other" {{ old('relationship_to_patient') == 'Other' ? 'selected' : '' }}>Other</option>
+                        </select>
+                        <i class='bx bx-chevron-down select-icon'></i>
+                    </div>
                 </div>
             </div>
 

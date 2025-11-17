@@ -26,8 +26,7 @@ class EnsurePatientProfileComplete
         // For patient role → check profile completion
         if ($user->role === 'patient') {
             if (!$user->patient) {
-                return redirect()->route('profile.complete')
-                    ->with('message', 'Please complete your patient profile first.');
+                return redirect()->route('profile.complete');
             }
         }
 

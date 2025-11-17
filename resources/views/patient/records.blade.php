@@ -205,64 +205,104 @@
         <p>View your detailed medical history and appointment records</p>
     </div>
 
-    <!-- Medical History Section -->
+    <!-- Patient Information and Medical History Table -->
     <div class="records-section">
         <div class="section-header">
             <i class='bx bx-health'></i>
-            <h2>Medical History</h2>
+            <h2>Patient Information & Medical History</h2>
         </div>
 
-        @if($medicalHistory)
-        <div class="record-card">
-            <div class="record-item">
-                <span class="record-label">Known Conditions:</span>
-                <span class="record-value {{ empty($medicalHistory->known_conditions) ? 'empty' : '' }}">
-                    {{ $medicalHistory->known_conditions ?? 'No known conditions recorded' }}
-                </span>
-            </div>
-            <div class="record-item">
-                <span class="record-label">Allergies:</span>
-                <span class="record-value {{ empty($medicalHistory->allergies) ? 'empty' : '' }}">
-                    {{ $medicalHistory->allergies ?? 'No allergies recorded' }}
-                </span>
-            </div>
-            <div class="record-item">
-                <span class="record-label">Current Medications:</span>
-                <span class="record-value {{ empty($medicalHistory->current_medications) ? 'empty' : '' }}">
-                    {{ $medicalHistory->current_medications ?? 'No current medications' }}
-                </span>
-            </div>
-            <div class="record-item">
-                <span class="record-label">Previous Hospitalizations:</span>
-                <span class="record-value {{ empty($medicalHistory->previous_hospitalization) ? 'empty' : '' }}">
-                    {{ $medicalHistory->previous_hospitalization ?? 'No previous hospitalizations' }}
-                </span>
-            </div>
-            <div class="record-item">
-                <span class="record-label">Family History:</span>
-                <span class="record-value {{ empty($medicalHistory->family_history) ? 'empty' : '' }}">
-                    {{ $medicalHistory->family_history ?? 'No family history recorded' }}
-                </span>
-            </div>
-            <div class="record-item">
-                <span class="record-label">Immunization Status:</span>
-                <span class="record-value">
-                    {{ $medicalHistory->immunization_status ?? 'Incomplete' }}
-                </span>
-            </div>
-            <div class="record-item">
-                <span class="record-label">Additional Remarks:</span>
-                <span class="record-value {{ empty($medicalHistory->remarks) ? 'empty' : '' }}">
-                    {{ $medicalHistory->remarks ?? 'No additional remarks' }}
-                </span>
-            </div>
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Field</th>
+                        <th>Information</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Patient Information -->
+                    <tr>
+                        <td><strong>Full Name</strong></td>
+                        <td>{{ $patient->first_name }} {{ $patient->middle_name }} {{ $patient->last_name }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Sex</strong></td>
+                        <td>{{ $patient->sex }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Date of Birth</strong></td>
+                        <td>{{ \Carbon\Carbon::parse($patient->birth_date)->format('F j, Y') }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Civil Status</strong></td>
+                        <td>{{ $patient->civil_status }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Contact Number</strong></td>
+                        <td>{{ $patient->contact_number }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Address</strong></td>
+                        <td>{{ $patient->address }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Emergency Contact Name</strong></td>
+                        <td>{{ $patient->emergency_contact_name }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Emergency Contact Number</strong></td>
+                        <td>{{ $patient->emergency_contact_number }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Relationship to Patient</strong></td>
+                        <td>{{ $patient->relationship_to_patient }}</td>
+                    </tr>
+
+                    <!-- Medical History -->
+                    @if($medicalHistory)
+                    <tr class="table-secondary">
+                        <td colspan="2"><strong>Medical History</strong></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Known Conditions</strong></td>
+                        <td>{{ $medicalHistory->known_conditions ?? 'No known conditions recorded' }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Allergies</strong></td>
+                        <td>{{ $medicalHistory->allergies ?? 'No allergies recorded' }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Current Medications</strong></td>
+                        <td>{{ $medicalHistory->current_medications ?? 'No current medications' }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Previous Hospitalizations</strong></td>
+                        <td>{{ $medicalHistory->previous_hospitalization ?? 'No previous hospitalizations' }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Family History</strong></td>
+                        <td>{{ $medicalHistory->family_history ?? 'No family history recorded' }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Immunization Status</strong></td>
+                        <td>{{ $medicalHistory->immunization_status ?? 'Incomplete' }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Additional Remarks</strong></td>
+                        <td>{{ $medicalHistory->remarks ?? 'No additional remarks' }}</td>
+                    </tr>
+                    @else
+                    <tr class="table-secondary">
+                        <td colspan="2"><strong>Medical History</strong></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="text-center text-muted">No medical history records found.</td>
+                    </tr>
+                    @endif
+                </tbody>
+            </table>
         </div>
-        @else
-        <div class="no-records">
-            <i class='bx bx-health'></i>
-            <p>No medical history records found.</p>
-        </div>
-        @endif
     </div>
 
     <!-- Appointment History Section -->

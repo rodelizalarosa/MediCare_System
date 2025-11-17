@@ -1,6 +1,11 @@
 <header class="header">
     <div class="header-left">
-        <h1 id="menu-title">{{ $pageTitle ?? 'Dashboard' }}</h1>
+        <h1 id="menu-title">
+            @if(isset($pageIcon))
+                <i class='bx {{ $pageIcon }}' style="margin-right: 10px;"></i>
+            @endif
+            {{ $pageTitle ?? 'Dashboard' }}
+        </h1>
         <p class="date" id="current-date">{{ now()->format('l, F j, Y') }}</p>
     </div>
 
@@ -86,17 +91,10 @@ document.addEventListener("DOMContentLoaded", () => {
     closeLogoutModal();
 });
 
-// Dynamic Title (based on sidebar click)
+// Update current date dynamically
 document.addEventListener("DOMContentLoaded", () => {
-    document.querySelectorAll(".sidebar-link").forEach(link => {
-        link.addEventListener("click", function () {
-            const title = this.querySelector("span").textContent.trim();
-            document.getElementById("menu-title").textContent = title;
-
-            // Active state
-            document.querySelectorAll(".sidebar-link").forEach(l => l.classList.remove("active"));
-            this.classList.add("active");
-        });
-    });
+    const now = new Date();
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    document.getElementById("current-date").textContent = now.toLocaleDateString('en-US', options);
 });
 </script>

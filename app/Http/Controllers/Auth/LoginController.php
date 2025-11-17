@@ -62,7 +62,7 @@ class LoginController extends Controller
             case 'staff':
             case 'doctor':
             case 'midwife':
-                return redirect()->route('dashboard.staff');
+                return redirect()->route('admin.dashboard');
             case 'patient':
                 // Check if patient profile is complete (has address)
                 if ($user->patient && !empty($user->patient->address)) {
@@ -70,8 +70,7 @@ class LoginController extends Controller
                     return redirect()->route('dashboard.patient');
                 } else {
                     // Profile not complete, redirect to complete-profile
-                    return redirect()->route('profile.complete')
-                        ->with('message', 'Please complete your profile to continue.');
+                    return redirect()->route('profile.complete');
                 }
             default:
                 return redirect('/');

@@ -21,6 +21,62 @@ body {
     z-index: 10000;
 }
 
+/* Admin Sidebar */
+.admin-sidebar {
+    background: #FFD700; /* gold background */
+    color: #000000; /* black text for contrast */
+}
+
+.admin-sidebar .sidebar-link {
+    color: #000000;
+}
+
+.admin-sidebar .sidebar-link i {
+    color: #000000;
+}
+
+.admin-sidebar .sidebar-link:hover {
+    background: #1B4D89; /* blue on hover */
+    color: #ffffff;
+}
+
+.admin-sidebar .sidebar-link:hover i {
+    color: #ffffff;
+}
+
+.admin-sidebar .sidebar-link.active {
+    background: #1B4D89; /* blue for active */
+    color: #ffffff;
+}
+
+.admin-sidebar .sidebar-link.active i {
+    color: #ffffff;
+}
+
+.admin-sidebar .logo-text {
+    color: #000000;
+}
+
+/* Welcome Section */
+.welcome-section {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.welcome-text {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0;
+    color: #000000;
+}
+
+.separator {
+    border: 0;
+    height: 1px;
+    background: #000000;
+    margin: 10px 0;
+}
+
 /* Logo */
 .sidebar-header {
     display: flex;
@@ -79,6 +135,16 @@ body {
 
 .sidebar-menu li {
     margin-bottom: 12px;
+}
+
+.menu-title {
+    font-size: 12px;
+    font-weight: bold;
+    color: #000000;
+    text-transform: uppercase;
+    margin: 20px 0 10px 0;
+    padding-left: 14px;
+    letter-spacing: 0.5px;
 }
 
 .sidebar-link {
