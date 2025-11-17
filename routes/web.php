@@ -119,16 +119,25 @@ Route::middleware(['auth', 'profile.complete'])->group(function () {
     Route::post('/admin/appointments/{appointmentId}/cancel', [App\Http\Controllers\Admin\AppointmentController::class, 'cancel'])->name('admin.appointments.cancel');
     Route::post('/admin/appointments/{appointmentId}/complete', [App\Http\Controllers\Admin\AppointmentController::class, 'complete'])->name('admin.appointments.complete');
     Route::get('/admin/medical-history', function () {return view('admin.medical-history');})->name('admin.medical-history');
-    Route::get('/admin/reports', function () {return view('admin.reports');})->name('admin.reports');
+    Route::get('/admin/reports', [App\Http\Controllers\Admin\ReportController::class, 'index'])->name('admin.reports');
+    Route::get('/admin/reports/generate-pdf', [App\Http\Controllers\Admin\ReportController::class, 'generatePDF'])->name('admin.reports.generate-pdf');
     Route::get('/admin/staff', [App\Http\Controllers\Admin\StaffController::class, 'index'])->name('admin.staff');
     Route::get('/admin/staff/create', [App\Http\Controllers\Admin\StaffController::class, 'create'])->name('admin.staff.create');
     Route::post('/admin/staff', [App\Http\Controllers\Admin\StaffController::class, 'store'])->name('admin.staff.store');
+    Route::get('/admin/staff/{staff}', [App\Http\Controllers\Admin\StaffController::class, 'showStaff'])->name('admin.staff.show');
+    Route::post('/admin/staff/{staff}', [App\Http\Controllers\Admin\StaffController::class, 'updateStaff'])->name('admin.staff.update');
     Route::get('/admin/doctors', [App\Http\Controllers\Admin\StaffController::class, 'doctors'])->name('admin.doctors');
     Route::get('/admin/doctors/create', [App\Http\Controllers\Admin\StaffController::class, 'createDoctor'])->name('admin.doctors.create');
     Route::post('/admin/doctors', [App\Http\Controllers\Admin\StaffController::class, 'storeDoctor'])->name('admin.doctors.store');
+    Route::get('/admin/doctors/{doctor}', [App\Http\Controllers\Admin\StaffController::class, 'showDoctor'])->name('admin.doctors.show');
+    Route::post('/admin/doctors/{doctor}', [App\Http\Controllers\Admin\StaffController::class, 'updateDoctor'])->name('admin.doctors.update');
     Route::get('/admin/midwives', [App\Http\Controllers\Admin\StaffController::class, 'midwives'])->name('admin.midwives');
     Route::get('/admin/midwives/create', [App\Http\Controllers\Admin\StaffController::class, 'createMidwife'])->name('admin.midwives.create');
     Route::post('/admin/midwives', [App\Http\Controllers\Admin\StaffController::class, 'storeMidwife'])->name('admin.midwives.store');
+    Route::get('/admin/midwives/{midwife}', [App\Http\Controllers\Admin\StaffController::class, 'showMidwife'])->name('admin.midwives.show');
+    Route::post('/admin/midwives/{midwife}', [App\Http\Controllers\Admin\StaffController::class, 'updateMidwife'])->name('admin.midwives.update');
+    Route::get('/admin/profile', [App\Http\Controllers\Admin\ProfileController::class, 'showProfile'])->name('admin.profile');
+    Route::put('/admin/profile', [App\Http\Controllers\Admin\ProfileController::class, 'updateProfile'])->name('admin.profile.update');
     Route::get('/admin/notifications', function () {return view('admin.notifications');})->name('admin.notifications');
 
 });

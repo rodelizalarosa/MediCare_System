@@ -23,16 +23,16 @@ body {
 
 /* Admin Sidebar */
 .admin-sidebar {
-    background: #FFD700; /* gold background */
-    color: #000000; /* black text for contrast */
+    background: #F4A700; /* gold background like button */
+    color: #1B4D89; /* blue text for contrast */
 }
 
 .admin-sidebar .sidebar-link {
-    color: #000000;
+    color: #1B4D89;
 }
 
 .admin-sidebar .sidebar-link i {
-    color: #000000;
+    color: #1B4D89;
 }
 
 .admin-sidebar .sidebar-link:hover {
@@ -54,7 +54,7 @@ body {
 }
 
 .admin-sidebar .logo-text {
-    color: #000000;
+    color: #1B4D89;
 }
 
 /* Welcome Section */
@@ -70,11 +70,19 @@ body {
     color: #000000;
 }
 
+.admin-sidebar .welcome-text {
+    color: #1B4D89;
+}
+
 .separator {
     border: 0;
     height: 1px;
     background: #000000;
     margin: 10px 0;
+}
+
+.admin-sidebar .separator {
+    background: #1B4D89;
 }
 
 /* Logo */
@@ -145,6 +153,10 @@ body {
     margin: 20px 0 10px 0;
     padding-left: 14px;
     letter-spacing: 0.5px;
+}
+
+.admin-sidebar .menu-title {
+    color: #1B4D89;
 }
 
 .sidebar-link {

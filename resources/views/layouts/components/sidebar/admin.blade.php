@@ -52,7 +52,7 @@
 
         <li>
             <a href="{{ route('admin.doctors') }}" class="sidebar-link {{ request()->routeIs('admin.doctors') ? 'active' : '' }}">
-                <i class='bx bx-user-md'></i>
+                <i class='bx bx-plus-medical'></i>
                 <span>Doctors</span>
             </a>
         </li>
@@ -74,7 +74,7 @@
         </li>
 
         <li>
-            <a href="#" class="sidebar-link">
+            <a href="{{ route('admin.profile') }}" class="sidebar-link {{ request()->routeIs('admin.profile') ? 'active' : '' }}">
                 <i class='bx bx-user'></i>
                 <span>My Profile</span>
             </a>

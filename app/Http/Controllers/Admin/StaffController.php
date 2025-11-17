@@ -70,7 +70,7 @@ class StaffController extends Controller
             ]);
         });
 
-        return redirect()->route('admin.staff.index')->with('success', 'Staff member added successfully.');
+        return redirect()->route('admin.staff')->with('success', 'Staff member added successfully.');
     }
 
     /**
@@ -221,5 +221,125 @@ class StaffController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    /**
+     * Get staff details for AJAX view.
+     */
+    public function showStaff(Request $request, $id)
+    {
+        if ($request->ajax() && $request->has('action') && $request->action === 'view') {
+            $staff = Staff::with('user')->findOrFail($id);
+            return response()->json([
+                'staff' => $staff,
+                'user' => $staff->user
+            ]);
+        }
+        abort(404);
+    }
+
+    /**
+     * Update staff information.
+     */
+    public function updateStaff(Request $request, $id)
+    {
+        try {
+            $staff = Staff::findOrFail($id);
+
+            // Update staff data
+            $staff->update($request->only([
+                'first_name', 'middle_name', 'last_name', 'sex', 'birth_date',
+                'position', 'contact_number', 'address'
+            ]));
+
+            // Update user email if provided
+            if ($request->has('email')) {
+                $staff->user->update(['email' => $request->email]);
+            }
+
+            return response()->json(['success' => true, 'message' => 'Staff updated successfully']);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
+    }
+
+    /**
+     * Get doctor details for AJAX view.
+     */
+    public function showDoctor(Request $request, $id)
+    {
+        if ($request->ajax() && $request->has('action') && $request->action === 'view') {
+            $doctor = Doctor::with('user')->findOrFail($id);
+            return response()->json([
+                'doctor' => $doctor,
+                'user' => $doctor->user
+            ]);
+        }
+        abort(404);
+    }
+
+    /**
+     * Update doctor information.
+     */
+    public function updateDoctor(Request $request, $id)
+    {
+        try {
+            $doctor = Doctor::findOrFail($id);
+
+            // Update doctor data
+            $doctor->update($request->only([
+                'first_name', 'middle_name', 'last_name', 'specialization',
+                'license_number', 'PRC_expiry', 'contact_number', 'address'
+            ]));
+
+            // Update user email if provided
+            if ($request->has('email')) {
+                $doctor->user->update(['email' => $request->email]);
+            }
+
+            return response()->json(['success' => true, 'message' => 'Doctor updated successfully']);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
+    }
+
+    /**
+     * Get midwife details for AJAX view.
+     */
+    public function showMidwife(Request $request, $id)
+    {
+        if ($request->ajax() && $request->has('action') && $request->action === 'view') {
+            $midwife = Midwife::with('user')->findOrFail($id);
+            return response()->json([
+                'midwife' => $midwife,
+                'user' => $midwife->user
+            ]);
+        }
+        abort(404);
+    }
+
+    /**
+     * Update midwife information.
+     */
+    public function updateMidwife(Request $request, $id)
+    {
+        try {
+            $midwife = Midwife::findOrFail($id);
+
+            // Update midwife data
+            $midwife->update($request->only([
+                'first_name', 'middle_name', 'last_name', 'license_number',
+                'PRC_expiry', 'contact_number', 'address'
+            ]));
+
+            // Update user email if provided
+            if ($request->has('email')) {
+                $midwife->user->update(['email' => $request->email]);
+            }
+
+            return response()->json(['success' => true, 'message' => 'Midwife updated successfully']);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
     }
 }

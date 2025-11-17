@@ -38,42 +38,172 @@
         width: 100%;
         height: 100%;
         background-color: rgba(0,0,0,0.5);
+        overflow-y: auto;
     }
 
     .modal-content {
-        background-color: #fff;
+        background-color: #fefefe;
         margin: 5% auto;
-        padding: 20px;
-        border-radius: 8px;
+        padding: 0;
+        border: 1px solid #888;
         width: 90%;
-        max-width: 600px;
-        max-height: 80vh;
+        max-width: 800px;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        max-height: 90vh;
         overflow-y: auto;
     }
 
     .modal-header {
+        background: #1B4D89;
+        color: white;
+        padding: 20px;
+        border-radius: 12px 12px 0 0;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 20px;
     }
 
     .modal-title {
-        font-size: 1.5rem;
-        font-weight: 700;
-        color: #1B4D89;
         margin: 0;
+        font-size: 1.5rem;
+        font-weight: 600;
     }
 
     .close {
         color: #aaa;
+        float: right;
         font-size: 28px;
         font-weight: bold;
         cursor: pointer;
+        transition: color 0.2s;
     }
 
-    .close:hover {
-        color: #000;
+    .close:hover,
+    .close:focus {
+        color: white;
+    }
+
+    .modal-body {
+        padding: 20px;
+        max-height: 400px;
+        overflow-y: auto;
+        padding-right: 5px; /* Space for scrollbar */
+    }
+
+    /* Custom scrollbar for modal body */
+    .modal-body::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .modal-body::-webkit-scrollbar-track {
+        background: #f0f0f5;
+        border-radius: 10px;
+    }
+
+    .modal-body::-webkit-scrollbar-thumb {
+        background-color: #1B4D89;
+        border-radius: 10px;
+    }
+
+    .staff-details-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+
+    .staff-details-table th,
+    .staff-details-table td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    .staff-details-table th {
+        background: #f8f9fa;
+        font-weight: 600;
+        color: #333;
+        width: 30%;
+    }
+
+    .staff-details-table input,
+    .staff-details-table select,
+    .staff-details-table textarea {
+        width: 100%;
+        padding: 8px 12px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 14px;
+        box-sizing: border-box;
+    }
+
+    .staff-details-table textarea {
+        resize: vertical;
+        min-height: 60px;
+    }
+
+    .modal-footer {
+        padding: 20px;
+        background: #f8f9fa;
+        border-radius: 0 0 12px 12px;
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+    }
+
+    .btn-modal {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .btn-ok {
+        background: #28a745;
+        color: white;
+    }
+
+    .btn-ok:hover {
+        background: #218838;
+    }
+
+    .btn-edit-modal {
+        background: #ffc107;
+        color: #212529;
+    }
+
+    .btn-edit-modal:hover {
+        background: #e0a800;
+    }
+
+    .btn-save {
+        background: #007bff;
+        color: white;
+    }
+
+    .btn-save:hover {
+        background: #0056b3;
+    }
+
+    .btn-cancel {
+        background: #6c757d;
+        color: white;
+    }
+
+    .btn-cancel:hover {
+        background: #545b62;
+    }
+
+    .section-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #1B4D89;
+        margin: 20px 0 10px 0;
+        padding-bottom: 5px;
+        border-bottom: 2px solid #1B4D89;
     }
 
     .form-group {
@@ -100,13 +230,6 @@
     .form-group textarea {
         resize: vertical;
         min-height: 80px;
-    }
-
-    .modal-footer {
-        display: flex;
-        justify-content: flex-end;
-        gap: 10px;
-        margin-top: 20px;
     }
 
     .btn-secondary {
@@ -305,9 +428,7 @@
                             <td>{{ $member->contact_number }}</td>
                             <td>
                                 <div class="action-buttons">
-                                    <button type="button" class="btn-action btn-view">View</button>
-                                    <button type="button" class="btn-action btn-edit">Edit</button>
-                                    <button type="button" class="btn-action btn-delete">Delete</button>
+                                    <button type="button" class="btn-action btn-view" onclick="viewStaffDetails({{ $member->staff_id }})">View Details</button>
                                 </div>
                             </td>
                         </tr>
@@ -387,24 +508,232 @@
             </form>
         </div>
     </div>
+
+    <!-- Staff Details Modal -->
+    <div id="staffModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Staff Details</h2>
+                <span class="close" onclick="closeModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div id="staffDetailsContent">
+                    <!-- Content will be loaded here -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-modal btn-edit-modal" id="editBtn" onclick="enableEditMode()">Edit</button>
+                <button type="button" class="btn-modal btn-ok" id="okBtn" onclick="closeModal()">OK</button>
+                <button type="button" class="btn-modal btn-save" id="saveBtn" onclick="saveStaff()" style="display: none;">Save</button>
+                <button type="button" class="btn-modal btn-cancel" id="cancelBtn" onclick="cancelEdit()" style="display: none;">Cancel</button>
+            </div>
+        </div>
+    </div>
 </div>
-
-<script>
-    function openModal() {
-        document.getElementById('addStaffModal').style.display = 'block';
-    }
-
-    function closeModal() {
-        document.getElementById('addStaffModal').style.display = 'none';
-        document.getElementById('addStaffForm').reset();
-    }
-
-    // Close modal when clicking outside
-    window.onclick = function(event) {
-        var modal = document.getElementById('addStaffModal');
-        if (event.target == modal) {
-            closeModal();
-        }
-    }
-</script>
 @endsection
+
+@push('scripts')
+<script>
+let currentStaffId = null;
+let originalStaffData = {};
+
+function viewStaffDetails(staffId) {
+    currentStaffId = staffId;
+
+    // Fetch staff data via AJAX
+    fetch('/admin/staff/' + staffId + '?action=view', {
+        method: 'GET',
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'Accept': 'application/json',
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        displayStaffDetails(data.staff, data.user);
+        document.getElementById('staffModal').style.display = 'block';
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error loading staff details');
+    });
+}
+
+function displayStaffDetails(staff, user) {
+    const content = document.getElementById('staffDetailsContent');
+
+    content.innerHTML = `
+        <h3 class="section-title">Personal Information</h3>
+        <table class="staff-details-table">
+            <tr>
+                <th>Staff ID:</th>
+                <td><span id="display-staff-id">${staff.staff_id}</span></td>
+            </tr>
+            <tr>
+                <th>Email:</th>
+                <td>
+                    <span id="display-email">${user.email}</span>
+                    <input type="email" id="edit-email" value="${user.email}" style="display: none;">
+                </td>
+            </tr>
+            <tr>
+                <th>First Name:</th>
+                <td>
+                    <span id="display-first-name">${staff.first_name}</span>
+                    <input type="text" id="edit-first-name" value="${staff.first_name}" style="display: none;">
+                </td>
+            </tr>
+            <tr>
+                <th>Middle Name:</th>
+                <td>
+                    <span id="display-middle-name">${staff.middle_name || ''}</span>
+                    <input type="text" id="edit-middle-name" value="${staff.middle_name || ''}" style="display: none;">
+                </td>
+            </tr>
+            <tr>
+                <th>Last Name:</th>
+                <td>
+                    <span id="display-last-name">${staff.last_name}</span>
+                    <input type="text" id="edit-last-name" value="${staff.last_name}" style="display: none;">
+                </td>
+            </tr>
+            <tr>
+                <th>Sex:</th>
+                <td>
+                    <span id="display-sex">${staff.sex || 'N/A'}</span>
+                    <select id="edit-sex" style="display: none;">
+                        <option value="Male" ${staff.sex === 'Male' ? 'selected' : ''}>Male</option>
+                        <option value="Female" ${staff.sex === 'Female' ? 'selected' : ''}>Female</option>
+                        <option value="Other" ${staff.sex === 'Other' ? 'selected' : ''}>Other</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th>Birth Date:</th>
+                <td>
+                    <span id="display-birth-date">${staff.birth_date ? new Date(staff.birth_date).toLocaleDateString() : 'N/A'}</span>
+                    <input type="date" id="edit-birth-date" value="${staff.birth_date || ''}" style="display: none;">
+                </td>
+            </tr>
+            <tr>
+                <th>Position:</th>
+                <td>
+                    <span id="display-position">${staff.position}</span>
+                    <select id="edit-position" style="display: none;">
+                        <option value="Health Worker" ${staff.position === 'Health Worker' ? 'selected' : ''}>Health Worker</option>
+                        <option value="Barangay Nurse" ${staff.position === 'Barangay Nurse' ? 'selected' : ''}>Barangay Nurse</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th>Contact Number:</th>
+                <td>
+                    <span id="display-contact-number">${staff.contact_number || 'N/A'}</span>
+                    <input type="text" id="edit-contact-number" value="${staff.contact_number || ''}" style="display: none;">
+                </td>
+            </tr>
+            <tr>
+                <th>Address:</th>
+                <td>
+                    <span id="display-address">${staff.address || 'N/A'}</span>
+                    <textarea id="edit-address" style="display: none;">${staff.address || ''}</textarea>
+                </td>
+            </tr>
+        </table>
+    `;
+
+    // Store original data for cancel functionality
+    originalStaffData = {
+        staff: { ...staff },
+        user: { ...user }
+    };
+}
+
+function enableEditMode() {
+    // Hide display elements and show edit inputs
+    const displayElements = document.querySelectorAll('[id^="display-"]');
+    const editElements = document.querySelectorAll('[id^="edit-"]');
+
+    displayElements.forEach(el => el.style.display = 'none');
+    editElements.forEach(el => el.style.display = 'block');
+
+    // Toggle buttons
+    document.getElementById('editBtn').style.display = 'none';
+    document.getElementById('okBtn').style.display = 'none';
+    document.getElementById('saveBtn').style.display = 'inline-block';
+    document.getElementById('cancelBtn').style.display = 'inline-block';
+}
+
+function cancelEdit() {
+    // Restore original data
+    displayStaffDetails(originalStaffData.staff, originalStaffData.user);
+
+    // Toggle buttons back
+    document.getElementById('editBtn').style.display = 'inline-block';
+    document.getElementById('okBtn').style.display = 'inline-block';
+    document.getElementById('saveBtn').style.display = 'none';
+    document.getElementById('cancelBtn').style.display = 'none';
+}
+
+function saveStaff() {
+    const formData = new FormData();
+
+    // Collect staff data
+    formData.append('first_name', document.getElementById('edit-first-name').value);
+    formData.append('middle_name', document.getElementById('edit-middle-name').value);
+    formData.append('last_name', document.getElementById('edit-last-name').value);
+    formData.append('sex', document.getElementById('edit-sex').value);
+    formData.append('birth_date', document.getElementById('edit-birth-date').value);
+    formData.append('position', document.getElementById('edit-position').value);
+    formData.append('contact_number', document.getElementById('edit-contact-number').value);
+    formData.append('address', document.getElementById('edit-address').value);
+    formData.append('email', document.getElementById('edit-email').value);
+
+    // Send update request
+    fetch('/admin/staff/' + currentStaffId, {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+            'X-Requested-With': 'XMLHttpRequest',
+            'Accept': 'application/json',
+        },
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('Staff information updated successfully!');
+            closeModal();
+            location.reload(); // Refresh to show updated data
+        } else {
+            alert('Error updating staff information: ' + (data.message || 'Unknown error'));
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error updating staff information');
+    });
+}
+
+function openModal() {
+    document.getElementById('addStaffModal').style.display = 'block';
+}
+
+function closeModal() {
+    document.getElementById('addStaffModal').style.display = 'none';
+    document.getElementById('staffModal').style.display = 'none';
+    document.getElementById('addStaffForm').reset();
+    currentStaffId = null;
+    originalStaffData = {};
+}
+
+// Close modal when clicking outside
+window.onclick = function(event) {
+    const addModal = document.getElementById('addStaffModal');
+    const viewModal = document.getElementById('staffModal');
+    if (event.target == addModal || event.target == viewModal) {
+        closeModal();
+    }
+}
+</script>
+@endpush

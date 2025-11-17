@@ -56,42 +56,31 @@
         color: #1B4D89;
     }
 
-    .record-card {
+    .appointments-table {
+        width: 100%;
+        border-collapse: collapse;
         background: #ffffff;
         border-radius: 12px;
+        overflow: hidden;
         box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-        padding: 25px;
-        margin-bottom: 20px;
-        border-left: 4px solid #1B4D89;
     }
 
-    .record-item {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 12px 0;
+    .appointments-table th,
+    .appointments-table td {
+        padding: 15px;
+        text-align: left;
         border-bottom: 1px solid #f0f0f0;
     }
 
-    .record-item:last-child {
-        border-bottom: none;
-    }
-
-    .record-label {
+    .appointments-table th {
+        background: #1B4D89;
+        color: white;
         font-weight: 600;
-        color: #333;
-        min-width: 200px;
+        font-size: 0.9rem;
     }
 
-    .record-value {
-        color: #555;
-        flex: 1;
-        text-align: right;
-    }
-
-    .record-value.empty {
-        color: #999;
-        font-style: italic;
+    .appointments-table tr:hover {
+        background: #f8f9fa;
     }
 
     .appointment-item {
@@ -181,18 +170,10 @@
             font-size: 1.5rem;
         }
 
-        .record-item {
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 5px;
-        }
-
-        .record-value {
-            text-align: left;
-        }
-
-        .appointment-details {
-            grid-template-columns: 1fr;
+        .appointments-table th,
+        .appointments-table td {
+            padding: 10px 5px;
+            font-size: 0.8rem;
         }
     }
 </style>
@@ -212,9 +193,9 @@
             <h2>Patient Information & Medical History</h2>
         </div>
 
-        <div class="table-responsive">
-            <table class="table table-striped table-bordered">
-                <thead class="table-dark">
+        <div style="overflow-x: auto;">
+            <table class="appointments-table">
+                <thead>
                     <tr>
                         <th>Field</th>
                         <th>Information</th>
@@ -261,7 +242,7 @@
 
                     <!-- Medical History -->
                     @if($medicalHistory)
-                    <tr class="table-secondary">
+                    <tr>
                         <td colspan="2"><strong>Medical History</strong></td>
                     </tr>
                     <tr>
@@ -293,7 +274,7 @@
                         <td>{{ $medicalHistory->remarks ?? 'No additional remarks' }}</td>
                     </tr>
                     @else
-                    <tr class="table-secondary">
+                    <tr>
                         <td colspan="2"><strong>Medical History</strong></td>
                     </tr>
                     <tr>
